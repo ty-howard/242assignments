@@ -1,41 +1,65 @@
-document.addEventListener("DOMContentLoaded", function () {
-    const gallery = document.getElementById('gallery');
-    const modal = document.getElementById('myModal');
-    const modalContent = document.querySelector('.modal-content');
-    const modalImage = document.getElementById('modal-image');
-    const modalDetails = document.getElementById('modal-details');
+const getCrafts = async() => {
+    try {
+        return (await fetch("http://localhost:3000/api/crafts")).json();
+    } catch(error){
+        console.log("error retrieving data");
+        return "";
+    }
+};
 
-    // Fetch crafts data from the server
-    fetch('/api/crafts')
-        .then(response => response.json())
-        .then(data => {
-            // Generate HTML for each craft
-            data.forEach(craft => {
-                const craftElement = document.createElement('div');
-                craftElement.classList.add('craft');
-                craftElement.innerHTML = `<img src="${craft.image}" alt="${craft.name}">`;
+const showCrafts = async() => {
+    const craftsJSON = await getCrafts();
+    const craftsDiv = document.getElementById("gallery");
 
-                // Add click event listener to show modal when image is clicked
-                craftElement.querySelector('img').addEventListener('click', () => {
-                    modalImage.src = craft.image;
-                    modalDetails.innerHTML = `<h2>${craft.name}</h2><p>${craft.description}</p>`;
-                    modal.style.display = 'block';
-                });
+    if(craftsJSON == ""){
+        craftsDiv.innerHTML = "Sorry, no crafts";
+        return;
+    }
 
-                gallery.appendChild(craftElement);
-            });
-        })
-        .catch(error => console.error('Error fetching crafts:', error));
+    //now loop through the json
+    craftsJSON.forEach((craft)=>{
 
-    // Close the modal when the close button (x) is clicked
-    document.querySelector('.close').addEventListener('click', () => {
-        modal.style.display = 'none';
+        const fig = document.createElement("figure");
+        craftsDiv.append(fig);
+        const img = document.createElement("img");
+        img.src = "./images/" + craft.image;
+        fig.append(img);
+        fig.onclick = () => openModal(craft);
     });
+};
 
-    // Close the modal when clicking outside of it
-    window.addEventListener('click', (event) => {
-        if (event.target === modal) {
-            modal.style.display = 'none';
-        }
-    });
-});
+const openModal = (craft) => {
+        const modal = document.getElementById("myModal");
+        const modalContent = document.getElementById("modal-content");
+        modalContent.innerHTML="";
+        
+        const closeBtn = document.getElementsByClassName("close")[0];
+        closeBtn.onclick = () => modal.style.display = "none";
+    
+        modal.style.display = "block";
+        
+        const columnsContainer = document.createElement("div");
+        columnsContainer.classList.add("columns");
+        
+        const dataColumn = document.createElement("div");
+        dataColumn.classList.add("one");
+        
+        const test = document.createElement("h3");
+        test.innerHTML = "test";
+        dataColumn.append(test);
+    
+        const imageColumn = document.createElement("div");
+        imageColumn.classList.add("one");
+    
+        const image = document.createElement("img");
+        image.src = "images/" + craft.image;
+        image.style.width = "100%";
+        imageColumn.append(image);
+    
+        columnsContainer.append(dataColumn);
+        columnsContainer.append(imageColumn);
+    
+        modalContent.append(columnsContainer);
+    }
+
+showCrafts();

@@ -1,63 +1,93 @@
+/* Code inspired from https://www.smashingmagazine.com/native-css-masonry-layout-css-grid/ */
 body {
-  font-family: Arial, sans-serif;
+  font-family: Arial, Helvetica, sans-serif;
+  background: #615756
+}
+
+/* Structure */
+
+img {
+  max-width: 100%;
+  display: block;
+}
+
+figure {
   margin: 0;
-  padding: 0;
-  background-color: #f0f0f0;
+  display: grid;
+  grid-template-rows: 1fr auto;
+  margin-bottom: 10px;
+  break-inside: avoid;
+  max-width: 300px;
+}
+
+figure > img {
+  grid-row: 1 / -1;
+  grid-column: 1;
 }
 
 .container {
-  max-width: 800px;
-  margin: 20px auto;
-  padding: 0 20px;
+  column-count: 4;
+  column-gap: 1px;
+  max-width: 1250px;
+  display: block;
+  margin: auto;
 }
 
-.gallery {
-  display: flex;
-  flex-wrap: wrap;
-  justify-content: center;
-}
-
-.craft {
-  margin: 10px;
-}
-
-.craft img {
-  width: 200px;
-  height: auto;
-  cursor: pointer;
-}
-
-/* Modal styles */
 .modal {
   display: none;
   position: fixed;
   z-index: 1;
-  padding-top: 100px;
   left: 0;
   top: 0;
   width: 100%;
   height: 100%;
   overflow: auto;
   background-color: rgb(0,0,0);
-  background-color: rgba(0,0,0,0.9);
+  background-color: rgba(0,0,0,0.4);
 }
 
 .modal-content {
-  margin: auto;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 80%;
-  max-height: 80%;
-  overflow: auto;
+  background-color: #fefefe;
+  margin: 15% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 60%;
 }
 
 .close {
-  color: #fff;
-  position: absolute;
-  top: 10px;
-  right: 25px;
-  font-size: 35px;
+  color: #aaa;
+  float: right;
+  font-size: 28px;
   font-weight: bold;
+}
+
+.close:hover, .close:focus {
+  color: black;
+  text-decoration: none;
   cursor: pointer;
+}
+
+.columns section {
+  padding: 1%;
+  margin: 1%;
+}
+
+/* Typography */
+
+h1 {
+  color: #EEEEEE;
+  margin-top: 20px;
+  text-align: center;
+  padding: 0;
+}
+
+/* Larger Resolutions */
+
+@media only screen and (min-width: 600px) {
+  .columns {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: right;
+    justify-content: space-between; /* Adjust as needed */
+  }
 }
