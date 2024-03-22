@@ -6,60 +6,74 @@ const getCrafts = async() => {
         return "";
     }
 };
-
-const showCrafts = async() => {
-    const craftsJSON = await getCrafts();
-    const craftsDiv = document.getElementById("gallery");
-
-    if(craftsJSON == ""){
-        craftsDiv.innerHTML = "Sorry, no crafts";
-        return;
-    }
-
-    //now loop through the json
-    craftsJSON.forEach((craft)=>{
-
-        const fig = document.createElement("figure");
-        craftsDiv.append(fig);
-        const img = document.createElement("img");
-        img.src = "./images/" + craft.image;
-        fig.append(img);
-        fig.onclick = () => openModal(craft);
+  
+  const showCrafts = async() => {
+    const crafts = await getCrafts();
+  
+    crafts.forEach((craft) => {
+      document.getElementById("gallery").append(getCraftFigure(craft));
     });
+  };
+  
+  const getCraftFigure = (craft) => {
+    const result = document.createElement("figure");
+    result.setAttribute("id","result");
+    result.onclick = () => openModal(craft);
+  
+    const img = document.createElement("img");
+    img.src = "./images/" + craft.image;
+    result.append(img);
+  
+    return result;
+  }
+  
+  const openModal = (craft) => {
+    const modal = document.getElementById("myModal");
+    const modalContent = document.getElementById("modal-content");
+
+    const closeBtn = document.getElementsByClassName("close")[0];
+    closeBtn.onclick = () => modal.style.display = "none";
+
+    modal.style.display = "block";
+
+    const cont = document.getElementById("mod-body");
+    cont.innerHTML="";
+
+    const picSec = document.createElement("section");
+    picSec.setAttribute("class","one");
+    cont.append(picSec);
+    
+    const pic = document.createElement("img");
+    pic.src = "./images/" + craft.image;
+    picSec.append(pic);
+
+    const txtSec = document.createElement("section");
+    txtSec.setAttribute("class","two");
+    cont.append(txtSec);
+    
+    const name = document.createElement("h2");
+    name.innerHTML = craft.name;
+    txtSec.append(name);
+
+    const desc = document.createElement("p");
+    desc.innerHTML = craft.description;
+    txtSec.append(desc);
+
+    const sup = document.createElement("h3");
+    sup.innerHTML = "Supplies:";
+    txtSec.append(sup);
+
+    const slist = document.createElement("ul");
+    craft.supplies.forEach((supply)=>{
+        const item = document.createElement("li");
+        item.innerHTML = supply;
+        slist.append(item);
+    })
+    txtSec.append(slist);
+
+    modalContent.append(cont);
 };
 
-const openModal = (craft) => {
-        const modal = document.getElementById("myModal");
-        const modalContent = document.getElementById("modal-content");
-        modalContent.innerHTML="";
-        
-        const closeBtn = document.getElementsByClassName("close")[0];
-        closeBtn.onclick = () => modal.style.display = "none";
-    
-        modal.style.display = "block";
-        
-        const columnsContainer = document.createElement("div");
-        columnsContainer.classList.add("columns");
-        
-        const dataColumn = document.createElement("div");
-        dataColumn.classList.add("one");
-        
-        const test = document.createElement("h3");
-        test.innerHTML = "test";
-        dataColumn.append(test);
-    
-        const imageColumn = document.createElement("div");
-        imageColumn.classList.add("one");
-    
-        const image = document.createElement("img");
-        image.src = "images/" + craft.image;
-        image.style.width = "100%";
-        imageColumn.append(image);
-    
-        columnsContainer.append(dataColumn);
-        columnsContainer.append(imageColumn);
-    
-        modalContent.append(columnsContainer);
-    }
+
 
 showCrafts();

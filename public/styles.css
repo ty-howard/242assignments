@@ -1,7 +1,7 @@
 /* Code inspired from https://www.smashingmagazine.com/native-css-masonry-layout-css-grid/ */
 body {
   font-family: Arial, Helvetica, sans-serif;
-  background: #615756
+  background: #FFF;
 }
 
 /* Structure */
@@ -18,6 +18,9 @@ figure {
   margin-bottom: 10px;
   break-inside: avoid;
   max-width: 300px;
+  cursor: pointer;
+  margin-left: 3px;
+  margin-right: 3px;
 }
 
 figure > img {
@@ -26,7 +29,7 @@ figure > img {
 }
 
 .container {
-  column-count: 4;
+  column-count: 2;
   column-gap: 1px;
   max-width: 1250px;
   display: block;
@@ -75,7 +78,7 @@ figure > img {
 /* Typography */
 
 h1 {
-  color: #EEEEEE;
+  color: green;
   margin-top: 20px;
   text-align: center;
   padding: 0;
@@ -84,10 +87,26 @@ h1 {
 /* Larger Resolutions */
 
 @media only screen and (min-width: 600px) {
+  .container {
+    column-count: 4;
+    column-gap: 1px;
+    max-width: 1250px;
+    display: block;
+    margin: auto;
+  }
+
   .columns {
     display: flex;
-    flex-wrap: wrap;
-    align-items: right;
-    justify-content: space-between; /* Adjust as needed */
+    padding: 0;
+    margin: 0;
   }
+  
+  .one {
+    flex: 1;
+  }
+  
+  .two {
+    flex: 2;
+  }
+  
 }
