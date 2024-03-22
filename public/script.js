@@ -1,6 +1,6 @@
 const getCrafts = async() => {
     try {
-        return (await fetch("http://localhost:3000/api/crafts")).json();
+        return (await fetch("https://two42assignments.onrender.com/api/crafts")).json();
     } catch(error){
         console.log("error retrieving data");
         return "";
